@@ -27,3 +27,20 @@
 
 #### A imagem seguinte demostra como deve ser a resposta
 ![img.png](imgs/img2.png)
+
+#### Para testar utilizando o jupyter é só utilizar o código abaixo:
+```python: import boto3
+import boto3
+import pandas as pd
+import io
+
+s3 = boto3.client('s3', endpoint_url='http://local:4566', aws_access_key_id='local', aws_secret_access_key='local')
+sep = "_;"
+try:
+    obj = s3.get_object(Bucket='bucket-origem-files', Key='arquivo_teste_1.txt')
+    byte_stream = io.BytesIO(obj['Body'].read())
+    df = pd.read_csv(byte_stream, sep=sep, header=None)
+    print(df.head())
+except s3.exceptions.NoSuchKey:
+    print("Arquivo não existe") 
+  
