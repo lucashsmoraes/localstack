@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  glue:
+    image: amazon/aws-glue-libs:glue_libs_3.0.0_image_01
+    ports:
+      - "8888:8888"
+    command: pip install jupyter && jupyter notebook --ip=0.0.0.0 --port=8888 --allow-root
+
+  localstack:
+    image: localstack/localstack
+    ports:
+      - "4572:4572"
+      - "4573:4573"
+      - "4574:4574"
+      - "4575:4575"
+      - "8055:8080"
+      - "4566:4566"
+    environment:
+      - SERVICES=s3,glue,sqs
+      - FILE=arquivo_teste_1.txt
+      - BUCKET=bucket-origem-files
+      - GLUE_ROLE_NAME=GlueRole
+      - GLUE_JOB_NAME=JobLeituraArquivo
+      - GLUE_SCRIPT_NAME=glue-script
+      - GLUE_SCRIPT_S3_BUCKET=buket-scripts-glue
+      - AWS_ACCESS_KEY_ID=local
+      - AWS_SECRET_ACCESS_KEY=local
+      - AWS_REGION=us-east-1
+      - DEBUG=1
+      - DATA_DIR=/var/lib/localstack
+    volumes:
+      - "./.localstack:/var/lib/localstack"
+      - "./aws:/etc/localstack/init/ready.d"
+
+
+
