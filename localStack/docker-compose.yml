@@ -1,7 +1,15 @@
 version: '3'
 
+networks:
+  myNetworks:
+
 services:
   glue:
+    container_name: glue
+    networks:
+      - myNetworks
+    depends_on:
+      - localstack
     image: amazon/aws-glue-libs:glue_libs_3.0.0_image_01
     ports:
       - "8888:8888"
@@ -9,6 +17,9 @@ services:
     command: /home/glue_user/jupyter/jupyter_start.sh
 
   localstack:
+    container_name: local
+    networks:
+      - myNetworks
     image: localstack/localstack
     ports:
       - "4572:4572"
