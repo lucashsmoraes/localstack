@@ -1,25 +1,8 @@
 version: '3'
 
-networks:
-  myNetworks:
-
 services:
-  glue:
-    container_name: glue
-    networks:
-      - myNetworks
-    depends_on:
-      - localstack
-    image: amazon/aws-glue-libs:glue_libs_3.0.0_image_01
-    ports:
-      - "8888:8888"
-      - "4040:4040"
-    command: /home/glue_user/jupyter/jupyter_start.sh
-
   localstack:
     container_name: local
-    networks:
-      - myNetworks
     image: localstack/localstack
     ports:
       - "4572:4572"
@@ -28,14 +11,11 @@ services:
       - "4575:4575"
       - "8055:8080"
       - "4566:4566"
+      - "4569:4569"
     environment:
-      - SERVICES=s3,glue,sqs
-      - FILE=arquivo_teste_1.txt
-      - BUCKET=bucket-origem-files
-      - GLUE_ROLE_NAME=GlueRole
-      - GLUE_JOB_NAME=JobLeituraArquivo
-      - GLUE_SCRIPT_NAME=glue-script
-      - GLUE_SCRIPT_S3_BUCKET=buket-scripts-glue
+      - SERVICES=dynamodb
+      - TABLE_NAME=teste
+      - ENDPOINT=http://localhost:4566
       - AWS_ACCESS_KEY_ID=local
       - AWS_SECRET_ACCESS_KEY=local
       - AWS_REGION=us-east-1

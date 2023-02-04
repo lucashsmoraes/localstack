@@ -1,0 +1,42 @@
+{
+  "TableName": "teste",
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "uuid",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "cpf",
+      "AttributeType": "S"
+    }
+  ],
+  "BillingMode": "PROVISIONED",
+  "KeySchema": [
+    {
+      "AttributeName": "uuid",
+      "KeyType": "HASH"
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 5,
+    "WriteCapacityUnits": 5
+  },
+  "GlobalSecondaryIndexes": [
+    {
+      "IndexName": "index1",
+      "KeySchema": [
+        {
+          "AttributeName": "cpf",
+          "KeyType": "HASH"
+        }
+      ],
+      "Projection": {
+        "ProjectionType": "ALL"
+      },
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 5,
+        "WriteCapacityUnits": 5
+      }
+    }
+  ]
+}
